@@ -1,0 +1,77 @@
+version: '3.6'
+services:
+  app:
+    image: cleydyr/tomcat:7-jdk8
+    environment:
+      - JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n"
+    depends_on:
+     - "db"
+    restart: always
+    volumes:
+      - type: bind
+        source: ./tomcat/Biblivre5.war
+        target: /usr/local/tomcat/webapps/Biblivre5.war
+    networks:
+      - biblivre5
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.biblivre.rule=Host(`biblivre.jairotech.com.br`)" # Substitua pelo seu domínio
+      - "traefik.http.routers.biblivre.entrypoints=websecure"
+      - "traefik.http.routers.biblivre.tls.certresolver=myresolver"
+      - "traefik.http.services.biblivre.loadbalancer.server.port=8080"
+
+  db:
+    image: postgres:10.3
+    environment:
+      POSTGRES_PASSWORD: abracadabra
+      POSTGRES_USER: postgres
+    volumes:
+      - type: bind
+        source: ./postgres/pg_hba.conf
+        target: /etc/postgresql/pg_hba.conf
+      - type: bind
+        source: ./postgres/postgresql.conf
+        target: /etc/postgresql/postgresql.conf
+      - type: bind
+        source: ./postgres/create-database.sh
+        target: /docker-entrypoint-initdb.d/create-database.sh
+      - type: bind
+        source: ./postgres/sql/createdatabase.sql
+        target: /docker-entrypoint-initdb.d/sql/createdatabase.sql
+      - type: bind
+        source: ./postgres/sql/biblivre4.sql
+        target: /docker-entrypoint-initdb.d/sql/biblivre4.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - biblivre5
+
+  traefik:
+    image: traefik:v2.10
+    restart: always
+    command:
+      - "--api.insecure=true" # Painel administrativo (desative em produção, se necessário)
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entryPoint.permanent=true" # Redirecionamento 301
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=meuemail@dominio.com" # Substitua pelo seu e-mail
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"    # Redireciona tráfego HTTP para o Traefik
+      - "443:443"  # Redireciona tráfego HTTPS para o Traefik
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "traefik-data:/letsencrypt"
+    networks:
+      - biblivre5
+
+networks:
+  biblivre5:
+    driver: bridge
+
+volumes:
+  traefik-data:
