@@ -15,6 +15,15 @@ Execute:
 git clone https://github.com/jairisonsouza/biblivre5.git
 ```
 
+## Configuração do domínio
+Altere o arquivo docker-compose.yml para de acordo com o seu domínio, na linha 18:
+
+```bash
+"traefik.http.routers.biblivre.rule=Host(`biblivre.jairotech.com.br`)" # Substitua pelo seu domínio
+```
+
+Não faça nenhuma outra configuração.
+
 ## Executando o contêiner.
 
 Acesse a pasta do projeto e execute os comandos:
