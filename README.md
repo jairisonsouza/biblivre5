@@ -12,7 +12,7 @@ Lembre de ter um dominio configurado para o IP da sua instância com as portas `
 Execute:
 
 ```bash
-https://github.com/jairisonsouza/biblivre5.git
+git clone https://github.com/jairisonsouza/biblivre5.git
 ```
 
 ## Executando o contêiner.
