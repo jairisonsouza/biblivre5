@@ -8,6 +8,17 @@ Lembre de ter um dominio configurado para o IP da sua instância com as portas `
 [Docker] (https://www.docker.com/get-docker)
 [Docker Compose] (https://docs.docker.com/compose/install)
 
+Para instalar o docker, execute:
+```bash
+sudo apt update
+sudo apt install docker.io
+```
+
+Para instalar o docker-compose, execute:
+```bash
+sudo apt install docker-compose
+```
+
 ## Baixando com o git
 Execute:
 
