@@ -1,6 +1,9 @@
 # Biblivre5 - Docker
 Configurações necessárias para executar o Biblivre 5 usando Docker
 
+# Dominio
+Lembre de ter um dominio configurado para o IP da sua instância com as portas `80` e `443` habilitadas no firewall.
+
 # Requisitos
 [Docker] (https://www.docker.com/get-docker)
 [Docker Compose] (https://docs.docker.com/compose/install)
@@ -9,11 +12,8 @@ Configurações necessárias para executar o Biblivre 5 usando Docker
 Execute:
 
 ```bash
-git clone git@gitlab.com:jairo-tech/biblivre5.git
+https://github.com/jairisonsouza/biblivre5.git
 ```
-
-## Baixando arquivo zip
-Baixe o [arquivo zip com o código](https://github.com/cleydyr/biblivre5-docker/archive/master.zip) e extraia.
 
 ## Executando o contêiner.
 
