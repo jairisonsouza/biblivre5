@@ -1,4 +1,2 @@
-FROM cleydyr/tomcat:7-jdk8
-RUN apt update
-RUN apt install -y postgresql-client
+FROM jairisondetran/tomcat:7-jdk8
 ENTRYPOINT catalina.sh run
