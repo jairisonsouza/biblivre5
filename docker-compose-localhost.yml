@@ -1,7 +1,7 @@
-version: '3.6'
+version: '3.9'
 services:
   app:
-    image: cleydyr/tomcat:7-jdk8
+    image: jairisondetran/tomcat:7-jdk8
     environment:
       - JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n"
     ports:
